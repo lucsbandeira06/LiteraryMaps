@@ -1,2 +1,2 @@
-## Google Maps 23884 ##
-### Lucas Bandeira - 23884 ###
+## Google Maps Application - React Native ##
+### Lucas Bandeira - ID: 23884 ###

@@ -4,6 +4,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import Icon from "react-native-vector-icons/FontAwesome";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Details from './components/Screens/DetailsScreen';
+import FilterScreen from './components/Screens/FilterScreen';
+
 
 
 // TAB NAVIGATOR
@@ -25,7 +27,7 @@ export default function App() {
             component={MapFunction}
             options={{
               tabBarIcon: ({ color }) => (
-                <Icon name="map" size={30} color={color} />
+                <Icon name="map" size={32} color={color} />
               ),
               headerStyle: {},
             }}
@@ -34,7 +36,7 @@ export default function App() {
             component={Details} 
             options={{
                 tabBarIcon: ({ color }) => (
-                  <Icon name="info" size={30} color={color} />
+                  <Icon name="info" size={32} color={color} />
                   )
                 }}   
             />

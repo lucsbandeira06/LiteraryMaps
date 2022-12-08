@@ -1,12 +1,14 @@
 import React from "react";
-import { View, Text } from 'react-native';
+import { Button, View, Text } from 'react-native';
 import  { styles }  from "../Styles";
 import { useRoute } from "@react-navigation/core";
+import { useNavigation } from "@react-navigation/native";
 
-export default function Details() {
+export default function Details({}) {
     
+    const navigation = useNavigation()
     const route = useRoute()
-   
+
     if (route.params === undefined) {
       //if else statement to check if there is any params being passed to the detail screen
       return (
@@ -25,6 +27,9 @@ export default function Details() {
         <Text style={ styles.detailScreenStyle }>gaelic_name: {gaelic_name}</Text>
         <Text style={ styles.detailScreenStyle }>latitude: {latitude}</Text>
         <Text style={ styles.detailScreenStyle }>longitude: {longitude}</Text>
+        <Button style={ styles.Buttons}
+        title="GO BACK"
+        onPress={() => navigation.goBack()}></Button>
       </View>
 
     );

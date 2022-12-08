@@ -16,13 +16,15 @@ const initialPosition = {
 }
 
 //Main Map function where data will be fetched to render the map and markers for places.
-export default function MapFunction() {
+export default function MapFunction(props) {
    
-   
+ 
   const [Places, setPlaces] = useState([])
   const [PlaceType, setPlaceType] = useState([])
 
-  
+  const [search, setSearch] = useState()
+
+  const filter = props
 
 
   // Fetching data from two API's simultaneously Places and Place types.
@@ -93,9 +95,12 @@ const navigation = useNavigation()
 // Variable to position every marker on the map according to its coordinates
 const DisplayMarker = 
     Places.map((marker, position) => (
+        marker.place_type_id == filter || filter == 0 ? (
     <Marker
     //set position value
        key={position}
+       //Filter places by ID
+       filter={filter}
        coordinate={{ latitude: marker.latitude, longitude: marker.longitude}}
        //Calling MarkerColors function to change marker color according to its place type
        pinColor={MarkerColors(marker.place_type_id)}
@@ -124,20 +129,25 @@ const DisplayMarker =
         </Button>
          </View>
    </Callout>
-     </Marker>
-))
+     </Marker>  
+   ) : (
+        <React.Fragment key={position}></React.Fragment>
+      )
+    ))
 
   //In here we render the home screen which is the maps IOS and its features.
   return (   
     <MapView
-      filter={FilterScreen}
-      style={{flex:1}}
+      filter={search}
+      style={{flex:1, zIndex: -2}}
       //passing variable defined at the beginning of this file.
       initialRegion={initialPosition}
-      // Positioning markers on the map according to their coordinates.
+      //Positioning markers on the map according to their coordinates.
       showUserLocation={true}
-        //  below I call a variable to get marker displayed on the map 
+        //below I call a variable to get marker displayed on the map 
     >
+    <FilterScreen
+    setPlaceType={setSearch}></FilterScreen>
     {DisplayMarker}
       </MapView>
  
