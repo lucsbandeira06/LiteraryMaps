@@ -1,20 +1,46 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import * as React from 'react';
+import MapFunction from './components/Screens/MapDisplay';
+import { NavigationContainer } from '@react-navigation/native';
+import Icon from "react-native-vector-icons/FontAwesome";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import Details from './components/Screens/DetailsScreen';
+
+
+// TAB NAVIGATOR
+const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+
+        <NavigationContainer>
+         <Tab.Navigator
+         screenOptions={{
+           headerStyle:{
+             backgroundColor: "white"
+           },
+           headerColor: "black"
+           }}
+          >
+            <Tab.Screen name="Eiré Maps" 
+            component={MapFunction}
+            options={{
+              tabBarIcon: ({ color }) => (
+                <Icon name="map" size={30} color={color} />
+              ),
+              headerStyle: {},
+            }}
+            />
+            <Tab.Screen name="Details" 
+            component={Details} 
+            options={{
+                tabBarIcon: ({ color }) => (
+                  <Icon name="info" size={30} color={color} />
+                  )
+                }}   
+            />
+         </Tab.Navigator>
+        </NavigationContainer>
+  )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+
