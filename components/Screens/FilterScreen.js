@@ -2,14 +2,15 @@ import { styles } from "../Styles";
 import React, { useEffect, useState } from "react";
 import { Dropdown } from 'react-native-element-dropdown';
 import { useNavigation } from "@react-navigation/native";
-
+import MapFunction from "./MapDisplay";
 
 
 // In here we are defining a filter screen based on the PlacesType ID. The data is being pulled from PlacesType API
 
-export default function FilterScreen({ setPlaceType }) {
+export default function FilterScreen() {
  
 const navigation = useNavigation()
+const [search, setSearch] = useState(0)
     
   const PlaceTypeName = [
     { label: "Show all places", id: 0 },
@@ -44,13 +45,15 @@ const navigation = useNavigation()
           data={PlaceTypeName}
           labelField="label"
           valueField="id"
-          onChange={() => {setPlaceType}}
+          onChange={(value) => setSearch(value.id)}
           />
-       
-      )   })
-}
-  ) 
+       )})
+}) 
+ 
 
+return (
+  <MapFunction filter={search}/>
+)
 }
   
 

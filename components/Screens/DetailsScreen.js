@@ -1,10 +1,10 @@
 import React from "react";
-import { Button, View, Text } from 'react-native';
+import { Image, Button, View, Text } from 'react-native';
 import  { styles }  from "../Styles";
 import { useRoute } from "@react-navigation/core";
 import { useNavigation } from "@react-navigation/native";
 
-export default function Details({}) {
+export default function Details() {
     
     const navigation = useNavigation()
     const route = useRoute()
@@ -22,6 +22,8 @@ export default function Details({}) {
      // return Place data
     return (
       <View style={ styles.Detailcontainer }>
+          <Image source={{ uri: `https://picsum.photos/id/${Math.floor(Math.random() * 10)}/200/300` }}
+          style={{ width: 180, height: 180, borderRadius:100, marginBottom: 20, marginTop: 40 }} />
         <Text style={ styles.detailScreenStyle }>place_type_id: {place_type_id}</Text>
         <Text style={styles.detailScreenStyle }>name: {name}</Text>
         <Text style={ styles.detailScreenStyle }>gaelic_name: {gaelic_name}</Text>

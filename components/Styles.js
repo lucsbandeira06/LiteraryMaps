@@ -77,15 +77,18 @@ export const styles = StyleSheet.create({
         width: 120,
         margin: 4,
         borderRadius: 6,
+        textAlign: "center",
+        alignContent: "flex-start"  ,
+        fontStyle: 'bold'
       },
       dropdown: {
         backgroundColor: "white",
-        paddingHorizontal: 8,
-        margin: 14,   
+        margin: 8,
+        padding: 12,   
         borderRadius:12,
-        width: 125,
-        borderWidth: 1,
-        alignSelf: "flex-start",
+        width: 144,
+        height: 30,
+        alignContent: 'center',
       },
       searchInput: {
         alignSelf: "flex-start",

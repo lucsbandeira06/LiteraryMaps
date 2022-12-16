@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import { Button, View, Text } from 'react-native';
 import { styles } from '../Styles';
 import React from 'react';
-import { useNavigation } from '@react-navigation/core';
-import FilterScreen from './FilterScreen';
+import { Dropdown } from 'react-native-element-dropdown';
+
 
 
 // This constant set the initial position of maps when the application is first rendered.
@@ -18,13 +18,13 @@ const initialPosition = {
 //Main Map function where data will be fetched to render the map and markers for places.
 export default function MapFunction(props) {
    
- 
+  const {filter, navigation} = props;
   const [Places, setPlaces] = useState([])
   const [PlaceType, setPlaceType] = useState([])
 
-  const [search, setSearch] = useState()
+  const [search, setSearch] = useState(0)
 
-  const filter = props
+ 
 
 
   // Fetching data from two API's simultaneously Places and Place types.
@@ -39,6 +39,7 @@ useEffect(() => {
     .then(([dataPlaces, dataPlaceType]) => {
             setPlaces(dataPlaces);
             setPlaceType(dataPlaceType)
+            setSearch(dataPlaces)
          
     }) 
 }, []);
@@ -90,12 +91,24 @@ function MarkerColors(type_id) {
   }
 } 
 
-const navigation = useNavigation()
+// variable for filtering places by type
+const FilterOnChange = (id) => {
+    if (id){
+        const newData = Places.filter(item => {
+            const itemData = item.id ? item.name.toLocaleUpperCase() : ''.toLocaleUpperCase()
+            const textData = id.toLocaleUpperCase()
+            return itemData.indexOf(textData) > -1
+        })
+        setSearch(newData)
+    } else {
+        setSearch(Places)
+    }
+  }
 
 // Variable to position every marker on the map according to its coordinates
-const DisplayMarker = 
+const DisplayMarker =
     Places.map((marker, position) => (
-        marker.place_type_id == filter || filter == 0 ? (
+        // return marker.place_type_id == filter || filter == 0 ? 
     <Marker
     //set position value
        key={position}
@@ -130,15 +143,14 @@ const DisplayMarker =
          </View>
    </Callout>
      </Marker>  
-   ) : (
-        <React.Fragment key={position}></React.Fragment>
-      )
+        // :
+        // <React.Fragment key={position}></React.Fragment>
     ))
 
+    
   //In here we render the home screen which is the maps IOS and its features.
   return (   
     <MapView
-      filter={search}
       style={{flex:1, zIndex: -2}}
       //passing variable defined at the beginning of this file.
       initialRegion={initialPosition}
@@ -146,9 +158,37 @@ const DisplayMarker =
       showUserLocation={true}
         //below I call a variable to get marker displayed on the map 
     >
-    <FilterScreen
-    setPlaceType={setSearch}></FilterScreen>
     {DisplayMarker}
+    <Dropdown
+          value={search}
+          placeholder="Filter places"
+          style={styles.dropdown}
+          containerStyle={styles.dropdownContainer}
+          data={PlaceType}
+          labelField="name"
+          valueField="id"
+          onChange={ (event) => FilterOnChange(event)}
+    
+    />
+    
+
+    {/* <SelectList 
+    data={PlaceType.map((filter) => (
+        filter.name
+    ))} 
+    placeholder='Filter places...'
+    setSelected={setSearch}
+    dropdownStyles={{
+        backgroundColor: 'white'
+        
+    }}
+    boxStyles={
+        {
+        backgroundColor: 'white',
+        margin: 4    
+    }}
+    inputStyles={{ padding: 2}}
+    /> */}
       </MapView>
  
   );
