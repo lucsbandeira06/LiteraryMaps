@@ -7,7 +7,7 @@ import MapFunction from "./MapDisplay";
 
 // In here we are defining a filter screen based on the PlacesType ID. The data is being pulled from PlacesType API
 
-export default function FilterScreen() {
+export default function DropdownFilter() {
  
 const navigation = useNavigation()
 const [search, setSearch] = useState(0)
@@ -29,7 +29,7 @@ const [search, setSearch] = useState(0)
     { label: "Seignory", id: 13 },
     { label: "Forest", id: 14 },
     { label: "Lake", id: 15 },
-  ]; // TODO: GET DATA FROM PLACETYPE API
+  ]; 
 
 
   useEffect(() => {

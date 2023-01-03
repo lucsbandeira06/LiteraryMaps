@@ -4,7 +4,6 @@ import { Button, View, Text } from 'react-native';
 import { styles } from '../Styles';
 import React from 'react';
 import { Dropdown } from 'react-native-element-dropdown';
-import { MultipleSelectList } from 'react-native-dropdown-select-list'
 
 
 
@@ -22,10 +21,8 @@ export default function MapFunction(props) {
   const {filter, navigation} = props;
   const [Places, setPlaces] = useState([])
   const [PlaceType, setPlaceType] = useState([])
-
-  const [search, setSearch] = useState(0)
-
- 
+  const [Search, setSearch] = useState([])
+  const [newMarker, setNewMarker] = useState()
 
 
   // Fetching data from two API's simultaneously Places and Place types.
@@ -93,23 +90,23 @@ function MarkerColors(type_id) {
 } 
 
 // variable for filtering places by type
-const FilterOnChange = (id) => {
-    if (id){
-        const newData = Places.filter(item => {
-            const itemData = item.id ? item.name.toLocaleUpperCase() : ''.toLocaleUpperCase()
-            const textData = id.toLocaleUpperCase()
-            return itemData.indexOf(textData) > -1
-        })
-        setSearch(newData)
-    } else {
-        setSearch(Places)
-    }
-  }
+// const FilterOnChange = (id) => {
+//     if (id){
+//         const newData = Places.filter(item => {
+//             const itemData = item.id ? item.name.toLocaleUpperCase() : ''.toLocaleUpperCase()
+//             const textData = id.toLocaleUpperCase()
+//             return itemData.indexOf(textData) > -1
+//         })
+//         setSearch(newData)
+//     } else {
+//         setSearch(Places)
+//     }
+//   }
 
 // Variable to position every marker on the map according to its coordinates
 const DisplayMarker =
     Places.map((marker, position) => (
-        // return marker.place_type_id == filter || filter == 0 ? 
+        // return marker.place_type_id == filter || filter == 0 ? (
     <Marker
     //set position value
        key={position}
@@ -144,23 +141,40 @@ const DisplayMarker =
          </View>
    </Callout>
      </Marker>  
-        // :
+     
+        // ):
         // <React.Fragment key={position}></React.Fragment>
-    ))
-
-    
+    )) 
+   
   //In here we render the home screen which is the maps IOS and its features.
   return (   
     <MapView
+      onLongPress={(e) => {
+        setNewMarker(e.nativeEvent.coordinate);
+        // console.log(e.nativeEvent.coordinate) first time i long press the map
+        // it was returning object{}, and on the second time was returning the correct coordinates
+        // so i had to set the initial value to avoid error
+      }}
       style={{flex:1, zIndex: -2}}
       //passing variable defined at the beginning of this file.
       initialRegion={initialPosition}
       //Positioning markers on the map according to their coordinates.
       showUserLocation={true}
         //below I call a variable to get marker displayed on the map 
+        filter={Search}
     >
     {DisplayMarker}
-
+    <Marker //place a new marker where you press on the screen
+        coordinate={{
+          latitude: newMarker.latitude,
+          longitude: newMarker.longitude,
+        }}
+        pinColor={"black"}
+        draggable={true}
+        onDragEnd={(e) => {
+          setNewMarker(e.nativeEvent.coordinate);
+        }}  
+    ></Marker>
     <Dropdown
           placeholder="Filter places"
           style={styles.dropdown}
@@ -168,28 +182,9 @@ const DisplayMarker =
           data={PlaceType}
           labelField="name"
           valueField="id"
-          onChange={ (event) => setSearch(event)}
+          onChange={(value) => setSearch(value.id)}
+          />
     
-    />
-    
-
-    {/* <SelectList 
-    data={PlaceType.map((filter) => (
-        filter.name
-    ))} 
-    placeholder='Filter places...'
-    setSelected={setSearch}
-    dropdownStyles={{
-        backgroundColor: 'white'
-        
-    }}
-    boxStyles={
-        {
-        backgroundColor: 'white',
-        margin: 4    
-    }}
-    inputStyles={{ padding: 2}}
-    /> */}
       </MapView>
  
   );

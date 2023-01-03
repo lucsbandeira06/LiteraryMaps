@@ -4,7 +4,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import Icon from "react-native-vector-icons/FontAwesome";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Details from './components/Screens/DetailsScreen';
-import FilterScreen from './components/Screens/FilterScreen';
+
+
 
 
 
