@@ -4,6 +4,7 @@ import { Button, View, Text } from 'react-native';
 import { styles } from '../Styles';
 import React from 'react';
 import { Dropdown } from 'react-native-element-dropdown';
+import { MultipleSelectList } from 'react-native-dropdown-select-list'
 
 
 
@@ -159,15 +160,15 @@ const DisplayMarker =
         //below I call a variable to get marker displayed on the map 
     >
     {DisplayMarker}
+
     <Dropdown
-          value={search}
           placeholder="Filter places"
           style={styles.dropdown}
           containerStyle={styles.dropdownContainer}
           data={PlaceType}
           labelField="name"
           valueField="id"
-          onChange={ (event) => FilterOnChange(event)}
+          onChange={ (event) => setSearch(event)}
     
     />
     
