@@ -5,6 +5,29 @@ import { styles } from '../Styles';
 import React from 'react';
 import { Dropdown } from 'react-native-element-dropdown';
 
+//Harvesine formula 
+function haversine(lat1, lon1, lat2, lon2)
+    {
+        // distance between latitudes
+        // and longitudes
+        let dLat = (lat2 - lat1) * Math.PI / 180.0;
+        let dLon = (lon2 - lon1) * Math.PI / 180.0;
+           
+        // convert to radiansa
+        lat1 = (lat1) * Math.PI / 180.0;
+        lat2 = (lat2) * Math.PI / 180.0;
+         
+        // apply formulae
+        let a = Math.pow(Math.sin(dLat / 2), 2) +
+                   Math.pow(Math.sin(dLon / 2), 2) *
+                   Math.cos(lat1) *
+                   Math.cos(lat2);
+        let rad = 6371;
+        let c = 2 * Math.asin(Math.sqrt(a));
+        return rad * c;
+         
+    }
+ 
 
 
 // This constant set the initial position of maps when the application is first rendered.
@@ -25,7 +48,7 @@ export default function MapFunction(props) {
   const [newMarker, setNewMarker] = useState({
     latitude: 211.35014,
     longitude: -6.266155,
-  }) // had to give the new marker an initial position otherwhise there was a bug when rendering the map
+  }) // had to give the new marker an initial position otherwhise there was a bug when rendering the map.
 
 
   // Fetching data from two API's simultaneously Places and Place types.
@@ -95,7 +118,6 @@ function MarkerColors(type_id) {
 // Variable to position every marker on the map according to its coordinates
 const DisplayMarker =
     Places.map((marker, position) => (
-        // return marker.place_type_id == filter || filter == 0 ? (
     <Marker
     //set position value
        key={position}
@@ -130,28 +152,29 @@ const DisplayMarker =
          </View>
    </Callout>
      </Marker>  
-     
-        // ):
-        // <React.Fragment key={position}></React.Fragment>
-    )) 
+
+          )) 
    
 
   //In here we render the home screen which is the maps IOS and its features.
   return (   
+
     <MapView
       onLongPress={(e) => {
-        setNewMarker(e.nativeEvent.coordinate);
-        //Setting the coordinates of the new marker according to 
+    //Setting the coordinates of the new marker according to long press on the screen
+        setNewMarker(e.nativeEvent.coordinate); 
       }}
       style={{flex:1, zIndex: -2}}
       //Passing initial position of the map defined at the beginning of this file.
       initialRegion={initialPosition}
       //Positioning markers on the map according to their coordinates.
       showUserLocation={true}
-      //Below is the function which will load markers on the map according to latitude and longitute of places in Places API
       filter={Search}
+      //Below is the function which will load markers on the map according to latitude and longitute of places in Places API
+      
     >
      {DisplayMarker} 
+
     <Marker //Placing the new marker according to data that was set in the MapView LongPress
         coordinate={{
           latitude: newMarker.latitude,
@@ -171,24 +194,23 @@ const DisplayMarker =
     >
         <Callout>
         <View style={styles.CustomMarkerView}>
-          <Text style={styles.CustomMarkerDetails}
-          >Places within 10km radius: {
-            Places.filter((newmarker) => {return (Math.abs(newmarker.latitude - newMarker.latitude) < 0.1 ) && (Math.abs(newmarker.longitude - newMarker.longitude) < 0.1 )
-          }
-          ).length}</Text>
 
-           <Text style={styles.CustomMarkerDetails}>Nearest place: { 
-  // Finding the closest place from the custom marker(place_type_id = 0) to the closest place from the markerList
-    Places.filter((newmarker) => {
-        return (Math.abs(newmarker.latitude - newMarker.latitude) < 0.1) && (Math.abs(newmarker.longitude - newMarker.longitude) < 0.1)})
-        .sort((a, b) => {return (Math.abs(a.latitude - newMarker.latitude) + Math.abs(a.longitude - newMarker.longitude)) - (Math.abs(b.latitude - newMarker.latitude) + Math.abs(b.longitude - newMarker.longitude))}).name}
-            </Text>
+        <Text style={styles.CustomMarkerDetails}>Places within 10km radius: {
+        Places.filter((newmarker) => 
+        {return (Math.abs(newmarker.latitude - newMarker.latitude) < 0.1 ) && (Math.abs(newmarker.longitude - newMarker.longitude) < 0.1 )
+          }).length}</Text>
+          
+        <Text style={styles.CustomMarkerDetails}>Nearest place (km): {
+        // Places.map((marker) => {
+        //        return (Math.min(marker.latitude - newMarker.latitude) < 0.1 ) && (Math.abs(marker.longitude - newMarker.longitude) < 0.1 ) + " K.M." })
+               }
+               </Text>
 
           </View>
         </Callout>
     </Marker>
     
-      <Circle // Radius circle with new marker 
+      <Circle // Radius circle around new marker 
         center={{
           latitude: newMarker.latitude,
           longitude: newMarker.longitude,
