@@ -75,22 +75,25 @@ export const styles = StyleSheet.create({
     },
     dropdownContainer: {
         width: 120,
-        margin: 4,
+        margin: 8,
         padding: 6,
         borderRadius: 6,
         textAlign: "center",
-        alignContent: "flex-start"  ,
+        alignContent: "center",
         fontStyle: 'bold'
       },
       dropdown: {
         backgroundColor: "white",
-        margin: 8,
-        padding: 4,   
-        borderRadius:12,
-        width: 140,
+        marginBottom: 8,
+        marginTop: 3,
+        marginLeft: 3,
+        borderRadius:10,
+        borderColor: 'black',
+        width: 125,
+        alignItems: "center",
+        fontSize: 8,
         height: 30,
-        alignContent: 'center',
-      
+        justifyContent: "space-around"
       },
       searchInput: {
         alignSelf: "flex-start",
@@ -109,4 +112,18 @@ export const styles = StyleSheet.create({
         borderWidth: 2,
         padding: 5,
       },
+      CustomMarkerView: {
+        borderRadius: 5,
+        backgroundColor: 'white',
+        margin: 4,
+        display: "flex"
+      },
+      CustomMarkerDetails: {
+        color: "black",
+        fontSize: 14,
+        padding: 4,
+        margin: 4,
+        textAlign: "center",
+        textAlignVertical: "center"
+      }
   });

@@ -1,4 +1,4 @@
-import MapView, { Marker, Callout } from 'react-native-maps'
+import MapView, { Marker, Callout, Circle } from 'react-native-maps'
 import { useEffect, useState } from "react";
 import { Button, View, Text } from 'react-native';
 import { styles } from '../Styles';
@@ -22,7 +22,10 @@ export default function MapFunction(props) {
   const [Places, setPlaces] = useState([])
   const [PlaceType, setPlaceType] = useState([])
   const [Search, setSearch] = useState([])
-  const [newMarker, setNewMarker] = useState()
+  const [newMarker, setNewMarker] = useState({
+    latitude: 211.35014,
+    longitude: -6.266155,
+  }) // had to give the new marker an initial position otherwhise there was a bug when rendering the map
 
 
   // Fetching data from two API's simultaneously Places and Place types.
@@ -83,25 +86,11 @@ function MarkerColors(type_id) {
       case 14:
           return 'teal';
       case 15:
-          return 'gold';
+          return 'black';
       default:
           return 'crimson';
   }
 } 
-
-// variable for filtering places by type
-// const FilterOnChange = (id) => {
-//     if (id){
-//         const newData = Places.filter(item => {
-//             const itemData = item.id ? item.name.toLocaleUpperCase() : ''.toLocaleUpperCase()
-//             const textData = id.toLocaleUpperCase()
-//             return itemData.indexOf(textData) > -1
-//         })
-//         setSearch(newData)
-//     } else {
-//         setSearch(Places)
-//     }
-//   }
 
 // Variable to position every marker on the map according to its coordinates
 const DisplayMarker =
@@ -146,44 +135,80 @@ const DisplayMarker =
         // <React.Fragment key={position}></React.Fragment>
     )) 
    
+
   //In here we render the home screen which is the maps IOS and its features.
   return (   
     <MapView
       onLongPress={(e) => {
         setNewMarker(e.nativeEvent.coordinate);
-        // console.log(e.nativeEvent.coordinate) first time i long press the map
-        // it was returning object{}, and on the second time was returning the correct coordinates
-        // so i had to set the initial value to avoid error
+        //Setting the coordinates of the new marker according to 
       }}
       style={{flex:1, zIndex: -2}}
-      //passing variable defined at the beginning of this file.
+      //Passing initial position of the map defined at the beginning of this file.
       initialRegion={initialPosition}
       //Positioning markers on the map according to their coordinates.
       showUserLocation={true}
-        //below I call a variable to get marker displayed on the map 
-        filter={Search}
+      //Below is the function which will load markers on the map according to latitude and longitute of places in Places API
+      filter={Search}
     >
-    {DisplayMarker}
-    <Marker //place a new marker where you press on the screen
+     {DisplayMarker} 
+    <Marker //Placing the new marker according to data that was set in the MapView LongPress
         coordinate={{
           latitude: newMarker.latitude,
           longitude: newMarker.longitude,
         }}
-        pinColor={"black"}
+        pinColor={"gold"}
         draggable={true}
         onDragEnd={(e) => {
-          setNewMarker(e.nativeEvent.coordinate);
+          setNewMarker({ 
+              id: newMarker.length + 1,
+              name: 'Custom marker',
+              place_type_id: 0,
+              latitude: e.nativeEvent.coordinate.latitude,
+              longitude: e.nativeEvent.coordinate.longitude
+          });
         }}  
-    ></Marker>
-    <Dropdown
+    >
+        <Callout>
+        <View style={styles.CustomMarkerView}>
+          <Text style={styles.CustomMarkerDetails}
+          >Places within 10km radius: {
+            Places.filter((newmarker) => {return (Math.abs(newmarker.latitude - newMarker.latitude) < 0.1 ) && (Math.abs(newmarker.longitude - newMarker.longitude) < 0.1 )
+          }
+          ).length}</Text>
+
+           <Text style={styles.CustomMarkerDetails}>Nearest place: { 
+  // Finding the closest place from the custom marker(place_type_id = 0) to the closest place from the markerList
+    Places.filter((newmarker) => {
+        return (Math.abs(newmarker.latitude - newMarker.latitude) < 0.1) && (Math.abs(newmarker.longitude - newMarker.longitude) < 0.1)})
+        .sort((a, b) => {return (Math.abs(a.latitude - newMarker.latitude) + Math.abs(a.longitude - newMarker.longitude)) - (Math.abs(b.latitude - newMarker.latitude) + Math.abs(b.longitude - newMarker.longitude))}).name}
+            </Text>
+
+          </View>
+        </Callout>
+    </Marker>
+    
+      <Circle // Radius circle with new marker 
+        center={{
+          latitude: newMarker.latitude,
+          longitude: newMarker.longitude,
+        }}
+        radius={10000} //10km radius
+        fillColor={"rgba(0,0,255,0.2)"} //blue color with very low opacity
+        strokeColor={"rgba(0,0,255,0.7)"} // outline of the circle
+      >
+      </Circle>
+    
+        <Dropdown
           placeholder="Filter places"
           style={styles.dropdown}
-          containerStyle={styles.dropdownContainer}
+        //   containerStyle={styles.dropdownContainer}
           data={PlaceType}
           labelField="name"
           valueField="id"
-          onChange={(value) => setSearch(value.id)}
-          />
+          //In here we pass the data 
+          onChange={(e) => setSearch(e.id)}
+    />
     
       </MapView>
  
