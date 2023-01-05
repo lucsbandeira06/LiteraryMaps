@@ -26,7 +26,7 @@ function haversine(lat1, lon1, lat2, lon2)
         let c = 2 * Math.asin(Math.sqrt(a));
         return rad * c;
          
-    }
+    }
  
 
 

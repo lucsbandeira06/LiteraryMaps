@@ -11,7 +11,7 @@ The main objective of this assignment is to create a mobile app to showcase in a
 - [x] When marker is tapped, place name should be displayed on a pop-up info window
 ### Show extended information ###
 - [x] When the pop up info window is tapped, show in full screen all details of the place (id, name, Gaelic name, type, GPS coordinates)
-- [x] Show the image of the place loaded from the internet2
+- [x] Show the image of the place loaded from the internet
 - [ ] [Bonus] Show relevant image using any free web service, or search engine
 - [x] Show a back button, when pressed, go back to map view
 ### Allow filtering by Place Type ###
@@ -34,3 +34,8 @@ https://picsum.photos/id/${Math.floor(Math.random() * 50)}/300/300
 
 ## Youtube video link ## 
 
+## References ##
+
+https://www.educative.io/answers/how-to-calculate-distance-using-the-haversine-formula
+https://reactnavigation.org/docs/getting-started/
+https://github.com/react-native-maps/react-native-maps
