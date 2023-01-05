@@ -26,16 +26,16 @@ The main objective of this assignment is to create a mobile app to showcase in a
 API's requests URLs:
 
 ### Places: ###
- https://gist.githubusercontent.com/saravanabalagi/541a511eb71c366e0bf3eecbee2dab0a/raw/bb1529d2e5b71fd06760cb030d6e15d6d56c34b3/places.json
+- https://gist.githubusercontent.com/saravanabalagi/541a511eb71c366e0bf3eecbee2dab0a/raw/bb1529d2e5b71fd06760cb030d6e15d6d56c34b3/places.json
 ### Place Types: ###
-https://gist.githubusercontent.com/saravanabalagi/541a511eb71c366e0bf3eecbee2dab0a/raw/bb1529d2e5b71fd06760cb030d6e15d6d56c34b3/place_types.json
+- https://gist.githubusercontent.com/saravanabalagi/541a511eb71c366e0bf3eecbee2dab0a/raw/bb1529d2e5b71fd06760cb030d6e15d6d56c34b3/place_types.json
 ### Images ###
-https://picsum.photos/id/${Math.floor(Math.random() * 50)}/300/300
+- https://picsum.photos/id/${Math.floor(Math.random() * 50)}/300/300
 
 ## Youtube video link ## 
 
 ## References ##
 
-https://www.educative.io/answers/how-to-calculate-distance-using-the-haversine-formula
-https://reactnavigation.org/docs/getting-started/
-https://github.com/react-native-maps/react-native-maps
+- https://www.educative.io/answers/how-to-calculate-distance-using-the-haversine-formula
+- https://reactnavigation.org/docs/getting-started/
+- https://github.com/react-native-maps/react-native-maps
